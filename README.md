@@ -1,0 +1,2 @@
+# PyCross
+Picross in Python 
