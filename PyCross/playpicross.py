@@ -1,51 +1,45 @@
-# https://matplotlib.org/3.4.3/users/event_handling.html
-
 from matplotlib import pyplot as plt
-from matplotlib.ticker import (AutoMinorLocator, MultipleLocator)
+from matplotlib.backend_bases import MouseButton
+from createpicross import * 
+import numpy as np
+    
 
-class Scatter_Draw: 
-    def __init__(self, point):
-        self.point = point 
-        self.xs = list(point.get_xdata())
-        self.ys = list(point.get_ydata())
-        self.cid = point.figure.canvas.mpl_connect('button_press_event', self)
-    def __call__(self, event):
-        print('click', event)
-        if event.inaxes!=self.point.axes: return
-        self.xs.append(event.xdata)
-        self.ys.append(event.ydata)
-        self.point.set_data(self.xs, self.ys)
-        self.point.figure.canvas.draw()
-            
-fig, ax = plt.subplots()
-ax.set_title('Picross Player')
-point, = ax.plot([], [], linestyle="none", marker="s", color="r", markersize=10)
-ax.xaxis.set_major_locator(MultipleLocator(1))
-ax.yaxis.set_major_locator(MultipleLocator(1))
-ax.grid(which='major', color='#CCCCCC', linestyle='-')
-ax.set_xticklabels("")
-ax.set_yticklabels("")
-ax.set_xlim(0, 10)
-ax.set_ylim(0, 10)
-linebuilder = Scatter_Draw(point)
+example_img = load_image(plot=False)
 
+length , width = np.shape(example_img)
+fig, ax = plot_hints(example_img, length, width)   
+
+answer_array = example_img
+loc = []
+
+def track_drawn(image, loc):
+    xs, ys = np.where(image == 1)
+    img_loc = [(x,y) for x,y in zip(xs,ys)]
+    if len(loc.intersection(img_loc)) == len(img_loc):
+        print("FINISHED")
+        plt.disconnect(click)
+    
+
+def on_click(event):
+    global loc 
+    if event.inaxes:
+        if event.button is MouseButton.LEFT:
+            x = int(np.floor(event.xdata))
+            y = int(np.floor(event.ydata))
+            if answer_array[y][x] == 1:
+                ax.scatter(x+0.5, y+0.5, marker="s", s = (10*100/fig.dpi)**2, c="black")
+                fig.canvas.draw()
+                loc.append((x, y))
+                print(set(loc))
+                track_drawn(answer_array, set(loc))
+            else:
+                ax.scatter(x+0.5, y+0.5, marker="s", s = (10*100/fig.dpi)**2, c="red")
+                fig.canvas.draw()
+                
+click = plt.connect('button_press_event', on_click)
 
 plt.show()
 
-# Save points 
 
-# Take saved points and check if they are within the answers 
-
-def color_square(example_array, x, y):
-    
-    if example_array[y][x] == 1:
-        axes.plot(x+0.5,y-0.5, marker="s", ms = (10*65/figure.dpi)**2, c="black")
-        array[y][x] = 1
-        return figure, True
-    else: 
-        array[y][x] = 0
-        axes.plot(x+0.5,y-0.5, marker="s", ms = (10*65/figure.dpi)**2, c="red")
-        print("Wrong Tile")
-        return figure, False
-    
-#plt.imshow(array, origin="lower")
+def check_done(): 
+    pass

@@ -6,6 +6,12 @@ from matplotlib.ticker import (AutoMinorLocator, MultipleLocator)
 import random
 from PIL import Image
 
+
+style = 'default'
+plt.style.use(style)
+plt.rcParams['font.family'] = 'sans-serif'
+
+
 # takes image given by user and rebinned the image 
 def img2bw(im, threshold = 50):
     '''
@@ -36,16 +42,19 @@ def img2bw(im, threshold = 50):
 # loads in the image and shows the user what the image is 
 # if no image is provided then a preset image is set and shown 
 
-def load_image(img=None, plot=True, window_sizex=50, window_sizey=50):
+def load_image(img=None, plot=True, window_sizex=20, window_sizey=20):
     '''
     loads the image that is to be the basis of the picross puzzle
 
     '''
+    
+    corr_window_sizex, corr_window_sizey = check_window_size(window_sizex, window_sizey)
+    
     try: 
         if check_image_loaded(img)[0] == True:
             print("Image Provided, Returning Image....")
             image_array = check_image_loaded(img)[1]
-            resized_image = np.array(image_array.resize((window_sizex, window_sizey))) 
+            resized_image = np.array(image_array.resize((corr_window_sizex, corr_window_sizey))) 
             image_array = np.array(img2bw(resized_image))
             
         elif check_image_loaded(img)[0] == False: 
@@ -64,7 +73,17 @@ def load_image(img=None, plot=True, window_sizex=50, window_sizey=50):
             
     else: 
         return image_array
-            
+
+def check_window_size(win_sizex, win_sizey):
+    if win_sizex > 40: 
+        win_sizex = 40
+        print("X-window size too large, using size", win_sizex, "instead")
+    if win_sizey > 40: 
+        win_sizey = 40
+        print("Y-window size too large, using size", win_sizey, "instead")        
+    return win_sizex, win_sizey
+    
+    
 def check_image_loaded(image=None): 
     '''
     checks that the image needed to load is loaded properly, if no image is given, it returns back a random preset image 
@@ -104,35 +123,31 @@ def set_preset_image():
     selects a random image from a preset array dictionary
     '''
 
-    
-    
-    images = {"HARD": np.array(img2bw(np.array(Image.open("images/galaxy.png").resize((25, 25))))),
+    images = {"HARD": np.array(img2bw(np.array(Image.open("images/galaxy.png").resize((15, 15))))),
               "MED": np.array(img2bw(np.array(Image.open("images/star.png").resize((15, 15))))),
-              "EASY":  np.array(img2bw(np.array(Image.open("images/rocket.png").resize((15, 15)))))
+              "EASY":  np.array(img2bw(np.array(Image.open("images/rocket.png").resize((10, 10)))))
                 }
     
     return random.choice(list(images.values()))
-
-
 
 
 def plot_grid(length, width): 
     '''
     plot the grid with the coordinates of each box depending on the size, specifed by the function
     '''
-    fig, ax = plt.subplots(figsize=(length, width), dpi=100)
-    ax.set_xlim(0, length+1)
-    ax.set_ylim(-1, width)
+    fig, ax = plt.subplots(figsize=(length, width), dpi=50)
+    ax.set_xlim(0, length)
+    ax.set_ylim(0, width)
     ax.xaxis.set_major_locator(MultipleLocator(1))
     ax.yaxis.set_major_locator(MultipleLocator(1))
     ax.grid(which='major', color='#CCCCCC', linestyle='-')
     ax.set_xticklabels("")
     ax.set_yticklabels("")
-
+    '''
     for i in np.arange(length+1):
         for j in np.arange(width+1):
-            ax.annotate(xy= (i+0.2, j-0.6), text=str(i)+", "+str(j))
-            
+            ax.annotate(xy= (i+0.2, j+0.5), text=str(i)+", "+str(j))
+   '''         
     return fig, ax
 
 def consecutive(data, stepsize=1):
@@ -157,14 +172,16 @@ def plot_hints(img_array, length, width):
     for i in np.arange(len(img_array)):
         row_hint.append(get_hint(img_array[i]))
         column_hint.append(get_hint(img_array.T[i]))
-        
+    
+    column_hint = [list(reversed(col)) for col in column_hint]
     # plot rows hints 
-    for i in np.arange(length+1):
-        ax.text(-0.35*len(row_hint[i-1]), i-0.5, ' '.join(str(row_hint[i-1]).strip("[]").replace(',', '')))
+    for i in np.arange(1, length+1):
+        ax.text(-0.35*len(row_hint[i-1]), i-0.5, ' '.join(str(row_hint[i-1]).strip("[]")), fontsize=20)
 
     # plot columns hints 
-    for i in np.arange(width+1):
-        ax.text(i+.5, width+0.35*len(column_hint[i-1]), '\n'.join(str(column_hint[i-1]).strip("[]").replace(',', '')), va='center')
-
+    for i in np.arange(1, width+1):
+        ax.text(i-.5, width+0.35*len(column_hint[i-1]), '\n'.join(str(column_hint[i-1]).strip("[]")), va='center', fontsize=20)
+    
+    return fig, ax
 
 
