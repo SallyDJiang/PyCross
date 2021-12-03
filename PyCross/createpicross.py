@@ -137,7 +137,11 @@ def set_preset_image():
 
     images = {"GALAXY": np.array(img2bw(np.array(Image.open("images/galaxy.png").resize((15, 15))))),
               "STAR": np.array(img2bw(np.array(Image.open("images/star.png").resize((15, 15))))),
-              "ROCKET":  np.array(img2bw(np.array(Image.open("images/rocket.png").resize((10, 10)))))
+              "ROCKET":  np.array(img2bw(np.array(Image.open("images/rocket.png").resize((10, 10))))),
+              "COMET":np.array(img2bw(np.array(Image.open("images/comet.png").resize((10, 10))))),
+              "BLACKHOLE":np.array(img2bw(np.array(Image.open("images/comet.png").resize((15, 15))))),
+              "SOLARSYSTEM":np.array(img2bw(np.array(Image.open("images/solarsystem.png").resize((15, 15))))),
+              "ATOM":np.array(img2bw(np.array(Image.open("images/atom.png").resize((20, 20)))))
                 }
     
     return random.choice(list(images.values()))
