@@ -1,8 +1,9 @@
 # PyCross
 Picross in Python 
 
-Please make sure the images file is correctly downloaded in order to start the program. This is to ensure that there you will still be able to play the game even if you do not provide the program an image. Thanks! 
+To start, please download the main "PyCross" Folder and go to the folder via the Terminal. 
 
+Note: Please make sure the images file is correctly downloaded in order to start the program. This is to ensure that there you will still be able to play the game even if you do not provide the program an image. Thanks! 
 
 **To Play a Game: **
 1. run Game.py in Terminal and you should be prompted with: 
