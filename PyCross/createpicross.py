@@ -6,10 +6,9 @@ from matplotlib.ticker import (AutoMinorLocator, MultipleLocator)
 import random
 from PIL import Image
 
-
 style = 'default'
 plt.style.use(style)
-plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.family'] = 'fantasy'
 
 
 # takes image given by user and rebinned the image 
@@ -18,12 +17,14 @@ def img2bw(im, threshold = 50):
     Takes in an image and takes features from it into another array with 0 for no
     notable features and 1 as having notable features. 
     
-    Turns array of color into binary,black and white image 
+    Turns array of color into binary, black and white image 
     
     Parameters
     ----------
     im: array_like
         original 2D array of image 
+    threshold: int
+        picks the threshold at which to select features in image 
     Returns
     -------
     rebinned: array_like
@@ -42,10 +43,22 @@ def img2bw(im, threshold = 50):
 # loads in the image and shows the user what the image is 
 # if no image is provided then a preset image is set and shown 
 
-def load_image(img=None, plot=True, window_sizex=20, window_sizey=20):
+def load_image(img=None, window_sizex=20, window_sizey=20):
     '''
     loads the image that is to be the basis of the picross puzzle
 
+    Parameters
+    ----------
+    img: array_like
+        image to be used  
+    window_sizex int
+        size of x component of image (Default: 20) 
+    window_sizey int
+        size of y component of image (Default: 20) 
+    Returns
+    -------
+    rebinned: array_like
+        rebinned and binary array with the important features of original image
     '''
     
     corr_window_sizex, corr_window_sizey = check_window_size(window_sizex, window_sizey)
@@ -56,25 +69,24 @@ def load_image(img=None, plot=True, window_sizex=20, window_sizey=20):
             image_array = check_image_loaded(img)[1]
             resized_image = np.array(image_array.resize((corr_window_sizex, corr_window_sizey))) 
             image_array = np.array(img2bw(resized_image))
+            return image_array
             
         elif check_image_loaded(img)[0] == False: 
             print("No Image Provided, Returning Preset Image....")
             image_array = check_image_loaded(img)[1] 
+            return image_array
         else: 
             pass
     except TypeError:
         pass
-    
-    if plot is True: 
-        try: 
-            plt.imshow(image_array, cmap="Greys")
-        except UnboundLocalError:
-            pass
-            
-    else: 
-        return image_array
+   
 
+    
+    
 def check_window_size(win_sizex, win_sizey):
+    '''
+    checks window size choosen by user and makes sure it is less than 40x40 pixels 
+    '''
     if win_sizex > 40: 
         win_sizex = 40
         print("X-window size too large, using size", win_sizex, "instead")
@@ -99,7 +111,7 @@ def check_image_loaded(image=None):
             return True, img
         
         except FileNotFoundError: 
-            print("Image not Valid, Please enter valid format for image (.png, .jpeg, .jpg)")
+            print("Image not Valid, Please enter valid format for image (.png, .jpeg, .jpg) or Check the filepath. ")
             pass
         
 def check_image_size(image): 
@@ -123,9 +135,9 @@ def set_preset_image():
     selects a random image from a preset array dictionary
     '''
 
-    images = {"HARD": np.array(img2bw(np.array(Image.open("images/galaxy.png").resize((15, 15))))),
-              "MED": np.array(img2bw(np.array(Image.open("images/star.png").resize((15, 15))))),
-              "EASY":  np.array(img2bw(np.array(Image.open("images/rocket.png").resize((10, 10)))))
+    images = {"GALAXY": np.array(img2bw(np.array(Image.open("images/galaxy.png").resize((15, 15))))),
+              "STAR": np.array(img2bw(np.array(Image.open("images/star.png").resize((15, 15))))),
+              "ROCKET":  np.array(img2bw(np.array(Image.open("images/rocket.png").resize((10, 10)))))
                 }
     
     return random.choice(list(images.values()))
@@ -143,6 +155,8 @@ def plot_grid(length, width):
     ax.grid(which='major', color='#CCCCCC', linestyle='-')
     ax.set_xticklabels("")
     ax.set_yticklabels("")
+    
+    # this is to add coordinates to each box, this can be used for debugging 
     '''
     for i in np.arange(length+1):
         for j in np.arange(width+1):
@@ -151,9 +165,15 @@ def plot_grid(length, width):
     return fig, ax
 
 def consecutive(data, stepsize=1):
+    '''
+    finds consectuive numbers in an array 
+    '''
     return np.split(data, np.where(np.diff(data) != stepsize)[0]+1)
 
 def get_hint(array): 
+    '''
+    given an array of 1s and 0s, it returns back grouped hints of where the ones are and how they are grouped 
+    '''
     one, = np.where(array == 1)
     np.split(array, np.where(np.diff(array) != 1)[0]+1)
     hints = [len(i) for i in consecutive(one)]
@@ -176,11 +196,11 @@ def plot_hints(img_array, length, width):
     column_hint = [list(reversed(col)) for col in column_hint]
     # plot rows hints 
     for i in np.arange(1, length+1):
-        ax.text(-0.35*len(row_hint[i-1]), i-0.5, ' '.join(str(row_hint[i-1]).strip("[]")), fontsize=20)
+        ax.text(-0.5*len(row_hint[i-1]), i-0.5, ''.join(str(row_hint[i-1]).strip("[]")), fontsize=20)
 
     # plot columns hints 
     for i in np.arange(1, width+1):
-        ax.text(i-.5, width+0.35*len(column_hint[i-1]), '\n'.join(str(column_hint[i-1]).strip("[]")), va='center', fontsize=20)
+        ax.text(i-.5, width+0.25*len(column_hint[i-1]), str(column_hint[i-1]).strip("[]").replace(",", ",\n"), va='center', fontsize=20)
     
     return fig, ax
 
