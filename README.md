@@ -1,12 +1,18 @@
 # PyCross
 Picross in Python 
 
-To start, please download the main "PyCross" Folder and go to the folder via the Terminal. 
+To start, please download the main "PyCross" Folder and go to the folder via the Terminal.
+
+Once your inside the folder through the terminal, Enter: 
+
+```
+python Game.py
+```
 
 Note: Please make sure the images file is correctly downloaded in order to start the program. This is to ensure that there you will still be able to play the game even if you do not provide the program an image. Thanks! 
 
 ## **To Play a Game:**
-1. run Game.py in Terminal and you should be prompted with: 
+1. Once you've run Game.py in Terminal and you should be prompted with: 
 ```
 Would you like to create or play a game? (Enter 'c' or 'p')
 ```
@@ -14,7 +20,7 @@ Please enter 'p' and you will recieve a random image to play, ranging in difficu
 
 
 ## **To Create a Game:**
-1. run Game.py in Terminal and you should be prompted with: 
+1. Once you've run Game.py in Terminal and you should be prompted with: 
 ```
 Would you like to create or play a game? (Enter 'c' or 'p')
 ```
