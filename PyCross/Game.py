@@ -25,24 +25,15 @@ def set_mode(mode_status):
     if str(mode_status).strip().upper() == 'C': # player wants to create a game 
 
         # Setup
-        filename = str(input("Please insert path to desired image file \nRecommended: .png, .jpeg \n"))
-        size = int(input("How big would you like the window?"))
-        make_game = str(input("Would you like to make a game with this image? (Y/N)"))
+        filename = str(input("Path to desired image file (.png) \n"))
+        size = int(input("Window Size?"))
+        #make_game = str(input("Would you like to make a game with this image? (Y/N)"))
 
         image_array = load_image(img=filename, window_sizex=size, window_sizey=size)
 
         if isinstance(image_array, np.ndarray): 
-            if make_game.strip().upper() == "Y": 
-                print("Making Game...")
-                mode_status = 'p'
-                return True
-            elif make_game.strip().upper() == "N": 
-                print("Not Making Game")
-                plt.imshow(image_array, cmap="Greys")
-                plt.show()
-                return False
-            else: 
-                print("Please enter Y or N into the terminal")
+            mode_status = 'p'
+            return True
         else: 
             pass
     elif str(mode_status).strip().upper() == 'P': # player wants to play a game 
