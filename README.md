@@ -11,6 +11,9 @@ python Game.py
 
 Note: Please make sure the images file is correctly downloaded in order to start the program. This is to ensure that there you will still be able to play the game even if you do not provide the program an image. Thanks! 
 
+**If you wish to use your own custom image, please insert them into the images folder to use. **
+
+
 ## **To Play a Game:**
 1. Once you've run Game.py in Terminal and you should be prompted with: 
 ```
@@ -30,15 +33,14 @@ images/imagename.png
 ```
 4. You will be asked for a window size: 
 ```
-How big would you like the window?
+Window Size?
 ```
 TIP: For easy: 10, medium: 20, hard: 25, extreme: 30. Please be advised that the bigger your size, the more cluttered your screen will be. 
 
-5. Lastly, you will be asked if you would like to make a game: 
-```
-Would you like to make a game with this image? (Y/N)
-```
-If you choose 'N' you will just be provided with final image, consider this the "answer sheet". 
-
 Have FUN! 
 
+## Using Demo.py
+Please Demo.py if you wish to preview what your image will look like in the game or to create an answer sheet for your image. Some images, particularlly images of larger size or of more detail may not look good as a game. Use Demo.py to check out how the game will look. To run, you will need streamlit: 
+```
+streamlit run Demo.py
+```
