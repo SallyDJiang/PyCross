@@ -11,7 +11,7 @@ python Game.py
 
 Note: Please make sure the images file is correctly downloaded in order to start the program. This is to ensure that there you will still be able to play the game even if you do not provide the program an image. Thanks! 
 
-**If you wish to use your own custom image, please insert them into the images folder to use. **
+**If you wish to use your own custom image, please insert them into the images folder to use.**
 
 
 ## **To Play a Game:**
