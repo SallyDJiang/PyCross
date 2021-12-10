@@ -104,7 +104,6 @@ def track_points(point, action, img):
         updated points of user
     '''
     
-    
     # insert the global variables to be used in function
     global fig
     global ax
@@ -117,12 +116,13 @@ def track_points(point, action, img):
     
     # update scoreboard
     ax.texts[-1].set_visible(False)
-    ax.text(x = np.shape(img)[0], y = np.shape(img)[1]/2, s="Score: "+str(point), fontsize=15)
+    ax.text(x = np.shape(img)[0], y = np.shape(img)[1]/2, s="  Score: "+str(point), fontsize=15)
     
     # ends games if score too low
-    if point <= -round((np.shape(img)[0] * np.shape(img)[1])/4): 
+    if point <= -round((np.shape(img)[0] * np.shape(img)[1])/15): 
         plt.disconnect(click)
-        ax.text(x = np.shape(img)[0]/2, y = np.shape(img)[1]/2, s="Game OVER! TOO MANY WRONGS \n Score: "+str(point), fontsize=15)
+        ax.text(x=length/2, y=-1, s="Game OVER! TOO MANY WRONGS \n Score: "+str(point), fontsize=20, ha="center", color="blue")
+        #ax.text(x = np.shape(img)[0]/2, y = np.shape(img)[1]/2, s="Game OVER! \n TOO MANY WRONGS \n Score: "+str(point), fontsize=50, ha="center", color="blue")
     fig.canvas.draw()
     return point
       

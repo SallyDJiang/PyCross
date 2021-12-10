@@ -12,7 +12,7 @@ plt.style.use(style)
 plt.rcParams['font.family'] = 'fantasy'
  
 # takes image given by user and rebinned the image 
-def img2bw(im, threshold = 50):
+def img2bw(im, threshold = 10):
     '''
     Takes in an image and takes features from it into another array with 0 for no
     notable features and 1 as having notable features. 
@@ -97,11 +97,11 @@ def check_window_size(win_sizex, win_sizey):
         returns back the window sizes (x and y) if not too big, 
         or returns max size, if too big
     '''
-    if win_sizex > 40: 
-        win_sizex = 40
+    if win_sizex > 50: 
+        win_sizex = 50
         print("X-window size too large, using size", win_sizex, "instead")
-    if win_sizey > 40: 
-        win_sizey = 40
+    if win_sizey > 50: 
+        win_sizey = 50
         print("Y-window size too large, using size", win_sizey, "instead")        
     return win_sizex, win_sizey
     
