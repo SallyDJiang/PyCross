@@ -40,7 +40,7 @@ TIP: For easy: 10, medium: 20, hard: 25, extreme: 30. Please be advised that the
 Have FUN! 
 
 ## Using Demo.py
-Please Demo.py if you wish to preview what your image will look like in the game or to create an answer sheet for your image. Some images, particularlly images of larger size or of more detail may not look good as a game. Use Demo.py to check out how the game will look. To run, you will need streamlit: 
+Please Demo.py if you wish to preview what your image will look like in the game or to create an answer sheet for your image. Some images, particularly images of larger size or of more detail may not look good as a game. Use Demo.py to check out how the game will look. To run, you will need streamlit: 
 ```
 streamlit run Demo.py
 ```
